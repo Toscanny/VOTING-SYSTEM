@@ -1,1 +1,1 @@
-# SCC Voting-System
+#***********SCC Voting-System ***************
