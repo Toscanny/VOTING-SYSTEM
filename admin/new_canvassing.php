@@ -93,11 +93,12 @@
 											require '../dbconnector/dbcon.php';
 											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'president' and status = 'approved'");
 											while($fetch = $query->fetch_array()){	
-													$id = $fetch['candidate_id'];										
-													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'" );
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
+													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
 													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'president'" );
-													$query3 = $conn->query("SELECT candidate_id, COUNT(*) * 100.0 /  (SELECT COUNT(*) FROM votes) AS Percent FROM votes GROUP BY candidate_id ORDER BY candidate_id;");													// $query3 = $conn->query("SELECT candidate_id, total CAST(candidate_id * 100) / total AS 'Percentage2') AS 'Percentage2' FROM votes " );
-													// $query3 = $conn->query("SELECT candidate_id, (SELECT COUNT(*) * 100 AS 'Percentage2') AS 'Percentage2' FROM votes");
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'president') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
 													$fetch1 = $query1->fetch_assoc();
 													$fetch2 = $query2->fetch_assoc();
 													$fetch3 = $query3->fetch_assoc();
@@ -117,423 +118,536 @@
 														
 										</table>
 
-										<!-- Vice President Area	 -->
-											<table class="table table-striped table-bordered table-hover ">
+										<!-- Vice President Area -->
+										<table class="table table-striped table-bordered table-hover ">
 												<thead>
 												<td style = "width:100%; text-align:center"class = "alert alert"><b>VICE PRESIDENT</b></td>
 												</thead>
 											</table>
-
-									 	<table class="table table-striped table-bordered table-hover ">
-												<thead>
-
-													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
-													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
-													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
-												
-												</thead>
-												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'vice president' and status = 'approved'");
-												while($fetch = $query->fetch_array()){
-													$id = $fetch['candidate_id'];
-													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
-													$fetch1 = $query1->fetch_assoc();
-												
-												?>
-												<tbody>
-
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;  " > 
-													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
-													<td><?php echo $fetch ['department'];?></td>
-													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
-												<?php }?>
-												</tbody>
-												
-												
-										</table>	
-										
-										<!-- Secretary Area -->
-											<table class="table table-striped table-bordered table-hover ">
-												<thead>
-												<td style = "width:100%; text-align:center"class = "alert alert"><b>SECRETARY</b></td>
-												</thead>
-											</table>
-
 										<table class="table table-striped table-bordered table-hover ">
+												
+										
 												<thead>
 
 													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
 													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
 													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VICE PRESIDENTS VOTES</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
 												
 												</thead>
 												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'secretary' and status = 'approved' ");
-												while($fetch = $query->fetch_array()){					
-													$id = $fetch['candidate_id'];
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'vice president' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
 													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'vice president'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'vice president') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
 													$fetch1 = $query1->fetch_assoc();
-											
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
+										
 												?>
 												<tbody>
-
 													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
 													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
 													<td><?php echo $fetch ['department'];?></td>
 													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
 												<?php }?>
 												</tbody>
-												
-												
-										</table>	
+
+										</table>
+
 										
-										<!-- Treasurer Area -->			
-											<table class="table table-striped table-bordered table-hover ">
+										<!-- Secretary Area -->
+										<table class="table table-striped table-bordered table-hover ">
 												<thead>
-												<td style = "width:100%; text-align:center"class = "alert alert"><b>TREASURER</b></td>
+												<td style = "width:100%; text-align:center"class = "alert alert"><b>SECRETARY</b></td>
 												</thead>
 											</table>
-
 										<table class="table table-striped table-bordered table-hover ">
+												
+										
 												<thead>
 
 													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
 													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
 													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL SECRETARY VOTES</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
 												
 												</thead>
 												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'treasurer' and status = 'approved' ");
-												while($fetch = $query->fetch_array()){
-													$id = $fetch['candidate_id'];
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'secretary' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
 													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'secretary'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'secretary') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
 													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
 										
 												?>
 												<tbody>
-
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;" > 
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
 													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
 													<td><?php echo $fetch ['department'];?></td>
 													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
 												<?php }?>
 												</tbody>
+														
+														
+										</table>
+
+										
+										<!-- Treasurer Area -->			
+										<table class="table table-striped table-bordered table-hover ">
+												<thead>
+												<td style = "width:100%; text-align:center"class = "alert alert"><b>TREASURER</b></td>
+												</thead>
+											</table>
+										<table class="table table-striped table-bordered table-hover ">
 												
+										
+												<thead>
+
+													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
+													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
+													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL TREASURER VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
 												
+												</thead>
+												<?php
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'treasurer' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
+													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'treasurer'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'treasurer') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
+													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
+										
+												?>
+												<tbody>
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
+													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
+													<td><?php echo $fetch ['department'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
+												<?php }?>
+												</tbody>
+														
+														
 										</table>
 
 
 										<!-- Auditor Area -->													
-											<table class="table table-striped table-bordered table-hover ">
+										<table class="table table-striped table-bordered table-hover ">
 												<thead>
 												<td style = "width:100%; text-align:center"class = "alert alert"><b>AUDITOR</b></td>
 												</thead>
 											</table>
 										<table class="table table-striped table-bordered table-hover ">
+												
+										
 												<thead>
 
 													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
 													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
 													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL AUDITOR VOTES</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
 												
 												</thead>
 												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'auditor' and status = 'approved'");
-												while($fetch = $query->fetch_array()){
-													$id = $fetch['candidate_id'];
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'auditor' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
 													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'auditor'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'auditor') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
 													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
 										
 												?>
 												<tbody>
-
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;"> 
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
 													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
 													<td><?php echo $fetch ['department'];?></td>
 													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
 												<?php }?>
 												</tbody>
-												
-										</table>	
-										
+														
+														
+										</table>
+
 										<!-- Mass Media Officer Area	 -->			
-											<table class="table table-striped table-bordered table-hover ">
+										<table class="table table-striped table-bordered table-hover ">
 												<thead>
-												<td style = "width:100%; text-align:center"class = "alert alert"><b>MASS MEDIA OFFICER</b></td>
+												<td style = "width:100%; text-align:center"class = "alert alert"><b>MASS MEDIA OFFICER AREA</b></td>
 												</thead>
 											</table>
 										<table class="table table-striped table-bordered table-hover ">
+												
+										
 												<thead>
 
 													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
 													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
 													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL MASS MEDIA OFFICER AREA VOTES</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
 												
 												</thead>
 												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Mass Media Officer' and status = 'approved'");
-												while($fetch = $query->fetch_array()){
-													$id = $fetch['candidate_id'];
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'mass media officer' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
 													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'mass media officer'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'mass media officer') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
 													$fetch1 = $query1->fetch_assoc();
-										
-												?>		
-												<tbody>
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
 
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;" > 
+										
+												?>
+												<tbody>
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
 													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
 													<td><?php echo $fetch ['department'];?></td>
 													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
 												<?php }?>
 												</tbody>
-												
-												
-										</table>	
+														
+														
+										</table>
+
 										
 										
 										<!-- Peace Officer Area -->				
-											<table class="table table-striped table-bordered table-hover ">
+										<table class="table table-striped table-bordered table-hover ">
 												<thead>
 												<td style = "width:100%; text-align:center"class = "alert alert"><b>PEACE OFFICER</b></td>
 												</thead>
 											</table>
 										<table class="table table-striped table-bordered table-hover ">
+												
+										
 												<thead>
 
 													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
 													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
 													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL PEACE OFFICER VOTES</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
 												
 												</thead>
 												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'peace officer' and status = 'approved'");
-												while($fetch = $query->fetch_array()){
-													$id = $fetch['candidate_id'];
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'peace officer' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
 													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'peace officer'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'peace officer') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
 													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
 										
 												?>
 												<tbody>
-
 													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
 													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
 													<td><?php echo $fetch ['department'];?></td>
 													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
 												<?php }?>
 												</tbody>
-												
-												
-										</table>	
+														
+														
+										</table>
+
 										
 										<!-- Activity Coordinator Area -->				
-											<table class="table table-striped table-bordered table-hover ">
+										<table class="table table-striped table-bordered table-hover ">
 												<thead>
 												<td style = "width:100%; text-align:center"class = "alert alert"><b>ACTIVITY COORDINATOR</b></td>
 												</thead>
 											</table>
-
 										<table class="table table-striped table-bordered table-hover ">
+												
+										
 												<thead>
 
 													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
 													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
 													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL ACTIVITY COORDINATOR</b></td>
 													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
 												
 												</thead>
 												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'activity coordinator' and status = 'approved'");
-												while($fetch = $query->fetch_array())
-												{
-													$id = $fetch['candidate_id'];
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'activity coordinator' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
 													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'activity coordinator'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'activity coordinator') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
 													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
 										
 												?>
 												<tbody>
-												
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;" > 
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
 													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
 													<td><?php echo $fetch ['department'];?></td>
 													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
 												<?php }?>
 												</tbody>
-												
-												
-										</table>	
-										<!-- 1st year liaison -->
-											<table class="table table-striped table-bordered table-hover ">
-												<thead>
-												<td style = "width:100%; text-align:center"class = "alert alert"><b>LIAISON 1ST YEAR</b></td>
-												</thead>
-											</table>
-
-										<table class="table table-striped table-bordered table-hover ">
-												<thead>
-
-													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
-													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
-													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
-												
-												</thead>
-												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Liaison 1st year' and status = 'approved'");
-												while($fetch = $query->fetch_array())
-												{
-													$id = $fetch['candidate_id'];
-													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
-													$fetch1 = $query1->fetch_assoc();
-										
-												?>
-												<tbody>
-												
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;" > 
-													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
-													<td><?php echo $fetch ['department'];?></td>
-													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
-												<?php }?>
-												</tbody>
-												
-												
-										</table>	
-										<!-- 2nd year liaison -->
-											<table class="table table-striped table-bordered table-hover ">
-												<thead>
-												<td style = "width:100%; text-align:center"class = "alert alert"><b>LIAISON 2ND YEAR</b></td>
-												</thead>
-											</table>
-
-										<table class="table table-striped table-bordered table-hover ">
-												<thead>
-
-													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
-													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
-													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
-												
-												</thead>
-												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Liaison 2nd year' and status = 'approved'");
-												while($fetch = $query->fetch_array())
-												{
-													$id = $fetch['candidate_id'];
-													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
-													$fetch1 = $query1->fetch_assoc();
-										
-												?>
-												<tbody>
-												
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;" > 
-													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
-													<td><?php echo $fetch ['department'];?></td>
-													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
-												<?php }?>
-												</tbody>
-												
-												
-										</table>	
-										<!-- 3rd year liaison -->
-											<table class="table table-striped table-bordered table-hover ">
-												<thead>
-												<td style = "width:100%; text-align:center"class = "alert alert"><b>LIAISON 3RD YEAR</b></td>
-												</thead>
-											</table>
-
-													<table class="table table-striped table-bordered table-hover ">
-												<thead>
-
-													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
-													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
-													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
-												
-												</thead>
-												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Liaison 3rd year' and status = 'approved'");
-												while($fetch = $query->fetch_array())
-												{
-													$id = $fetch['candidate_id'];
-													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
-													$fetch1 = $query1->fetch_assoc();
-										
-												?>
-												<tbody>
-												
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;" > 
-													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
-													<td><?php echo $fetch ['department'];?></td>
-													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
-												<?php }?>
-												</tbody>
-												
-												
-										</table>	
-
-										<!-- 4th year liaison -->
-											<table class="table table-striped table-bordered table-hover ">
-												<thead>
-												<td style = "width:100%; text-align:center"class = "alert alert"><b>LIAISON 4TH YEAR</b></td>
-												</thead>
-											</table>
-
-											<table class="table table-striped table-bordered table-hover ">
-												<thead>
-
-													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
-													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
-													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
-													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
-												
-												</thead>
-												<?php
-												require '../dbconnector/dbcon.php';
-												$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Liaison 4th year' and status = 'approved'");
-												while($fetch = $query->fetch_array())
-												{
-													$id = $fetch['candidate_id'];
-													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
-													$fetch1 = $query1->fetch_assoc();
-										
-												?>
-												<tbody>
-												
-													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer;" > 
-													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
-													<td><?php echo $fetch ['department'];?></td>
-													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
-												<?php }?>
-												</tbody>
-												
-												
+														
+														
 										</table>
 
+										<!-- 1st year liaison -->
+										<table class="table table-striped table-bordered table-hover ">
+												<thead>
+												<td style = "width:100%; text-align:center"class = "alert alert"><b>1st year liaison</b></td>
+												</thead>
+											</table>
+										<table class="table table-striped table-bordered table-hover ">
+												
+										
+												<thead>
+
+													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
+													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
+													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL 1st year liaison</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
+												
+												</thead>
+												<?php
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Liaison 1st year' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
+													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'Liaison 1st year'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'Liaison 1st year') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
+													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
+										
+												?>
+												<tbody>
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
+													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
+													<td><?php echo $fetch ['department'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
+												<?php }?>
+												</tbody>
+														
+														
+										</table>
+										<!-- 2nd year liaison -->
+										<table class="table table-striped table-bordered table-hover ">
+												<thead>
+												<td style = "width:100%; text-align:center"class = "alert alert"><b>2nd year liaison</b></td>
+												</thead>
+											</table>
+										<table class="table table-striped table-bordered table-hover ">
+												
+										
+												<thead>
+
+													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
+													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
+													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL 2nd year liaison</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
+												
+												</thead>
+												<?php
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Liaison 2nd year' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
+													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'Liaison 2nd year'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'Liaison 2nd year') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
+													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
+										
+												?>
+												<tbody>
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
+													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
+													<td><?php echo $fetch ['department'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
+												<?php }?>
+												</tbody>
+														
+														
+										</table>
+										<!-- 3rd year liaison -->
+										<table class="table table-striped table-bordered table-hover ">
+												<thead>
+												<td style = "width:100%; text-align:center"class = "alert alert"><b>3rd year liaison</b></td>
+												</thead>
+											</table>
+										<table class="table table-striped table-bordered table-hover ">
+												
+										
+												<thead>
+
+													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
+													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
+													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL 3rd year liaison</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
+												
+												</thead>
+												<?php
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Liaison 3rd year' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
+													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'Liaison 3rd year'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'Liaison 3rd year') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
+													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
+										
+												?>
+												<tbody>
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
+													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
+													<td><?php echo $fetch ['department'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
+												<?php }?>
+												</tbody>
+														
+														
+										</table>
+
+										<!-- 4th year liaison -->
+										<table class="table table-striped table-bordered table-hover ">
+												<thead>
+												<td style = "width:100%; text-align:center"class = "alert alert"><b>4th year liaison</b></td>
+												</thead>
+											</table>
+										<table class="table table-striped table-bordered table-hover ">
+												
+										
+												<thead>
+
+													<td style = "width:120px;" class = "alert alert"><b>IMAGE</b></td>
+													<td style = "width:600px;"class = "alert alert"><b>CANDIDATE NAME</b></td>
+													<td style = "width:90px; "class = "alert alert"><b>DEPARTMENT</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL VOTES</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>TOTAL 4th year liaison</b></td>
+													<td style = "width:90px; text-align:center"class = "alert alert" ><b>Percentage (%)</b></td>
+												
+												</thead>
+												<?php
+											require '../dbconnector/dbcon.php';
+											$query = $conn->query("SELECT * FROM tbl_candidate WHERE position = 'Liaison 4th year' and status = 'approved'");
+											while($fetch = $query->fetch_array()){	
+													$id = $fetch['candidate_id'];	
+													$id2 = $fetch['candidate_id'];								
+													$query1 = $conn->query("SELECT COUNT(*) as total FROM `votes` WHERE candidate_id = '$id'");
+													$query2 = $conn->query("SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'Liaison 4th year'" );
+													$query3 = $conn->query("SELECT COUNT(*) / (SELECT COUNT(tbl_candidate.candidate_id)  as 'percentage1' FROM votes INNER JOIN tbl_candidate ON votes.candidate_id = tbl_candidate.candidate_id WHERE tbl_candidate.position = 'Liaison 4th year') * 100.0 as Percent FROM `votes` WHERE candidate_id = '$id2'");
+												 
+													$fetch1 = $query1->fetch_assoc();
+													$fetch2 = $query2->fetch_assoc();
+													$fetch3 = $query3->fetch_assoc();
+
+										
+												?>
+												<tbody>
+													<td><img id="img" src = "<?php echo $fetch ['img'];?>" style = "width:40px; height:40px; cursor: pointer; " > 
+													<td><?php echo $fetch ['firstname']. " ".$fetch ['lastname']. " ";?></td>
+													<td><?php echo $fetch ['department'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch1 ['total'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch2 ['percentage1'];?></td>
+													<td style = "width:20px; text-align:center"><?php echo $fetch3 ['Percent'].'%';?></td>
+												<?php }?>
+												</tbody>
+														
+														
+										</table>
 									</div>				
 		   					 </div>
                             <!-- /.table-responsive -->
